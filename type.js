@@ -1,37 +1,32 @@
-"use strict";
 
-// brings in the assert module for unit testing
-const assert = require("assert");
-// brings in the readline module to access the command line
-const readline = require("readline");
-// use the readline module to print out to the command line
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
+  
+   let hands = ["rock", "paper", "scissors"];
+let randomItem = () => {
+  const randomHands = Math.floor(Math.random() * hands.length);
+  return hands[randomHands];
+};
 
-// the function that will be called by the unit test below
+const playButton = document.getElementById("playButton");
+const hand1Div = document.getElementById("hand1-btn");
+const hand2Div = document.getElementById("hand2-btn");
+const resultMessage = document.getElementById("resultMessage");
+
 const rockPaperScissors = (hand1, hand2) => {
-  // Convert inputs to lowercase and trim whitespace
-  const hand1Formatted = hand1.trim().toLowerCase();
-  const hand2Formatted = hand2.trim().toLowerCase();
-
   // Check for tie
-  if (hand1Formatted === hand2Formatted) {
+  if (hand1 === hand2) {
     return "It's a tie!";
   }
-
   // Determine the winner
   if (
-    (hand1Formatted === "rock" && hand2Formatted === "scissors") ||
-    (hand1Formatted === "scissors" && hand2Formatted === "paper") ||
-    (hand1Formatted === "paper" && hand2Formatted === "rock")
+    (hand1 === "rock" && hand2 === "scissors") ||
+    (hand1 === "scissors" && hand2 === "paper") ||
+    (hand1 === "paper" && hand2 === "rock")
   ) {
     return "Hand one wins!";
   } else if (
-    (hand2Formatted === "rock" && hand1Formatted === "scissors") ||
-    (hand2Formatted === "scissors" && hand1Formatted === "paper") ||
-    (hand2Formatted === "paper" && hand1Formatted === "rock")
+    (hand2 === "rock" && hand1 === "scissors") ||
+    (hand2 === "scissors" && hand1 === "paper") ||
+    (hand2 === "paper" && hand1 === "rock")
   ) {
     return "Hand two wins!";
   } else {
@@ -39,40 +34,11 @@ const rockPaperScissors = (hand1, hand2) => {
   }
 };
 
-// the first function called in the program to get an input from the user
-// to run the function use the command: node main.js
-// to close it ctrl + C
-function getPrompt() {
-  rl.question("hand1: ", (answer1) => {
-    rl.question("hand2: ", (answer2) => {
-      console.log(rockPaperScissors(answer1, answer2));
-      getPrompt();
-    });
-  });
-}
-
-// Unit Tests
-// to use them run the command: npm test main.js
-// to close them ctrl + C
-if (typeof describe === "function") {
-  describe("#rockPaperScissors()", () => {
-    it("should detect a tie", () => {
-      assert.equal(rockPaperScissors("rock", "rock"), "It's a tie!");
-      assert.equal(rockPaperScissors("paper", "paper"), "It's a tie!");
-      assert.equal(rockPaperScissors("scissors", "scissors"), "It's a tie!");
-    });
-    it("should detect which hand won", () => {
-      assert.equal(rockPaperScissors("rock", "paper"), "Hand two wins!");
-      assert.equal(rockPaperScissors("paper", "scissors"), "Hand two wins!");
-      assert.equal(rockPaperScissors("rock", "scissors"), "Hand one wins!");
-    });
-    it('should scrub input to ensure lowercase with "trim"ed whitepace', () => {
-      assert.equal(rockPaperScissors("rOcK", " paper "), "Hand two wins!");
-      assert.equal(rockPaperScissors("Paper", "SCISSORS"), "Hand two wins!");
-      assert.equal(rockPaperScissors("rock ", "sCiSsOrs"), "Hand one wins!");
-    });
-  });
-} else {
-  // always returns ask the user for another input
-  getPrompt();
-}
+playButton.addEventListener("click", () => {
+  let hand1Formatted = randomItem();
+  let hand2Formatted = randomItem();
+  hand1Div.textContent = hand1Formatted;
+  hand2Div.textContent = hand2Formatted;
+  let result = rockPaperScissors(hand1Formatted, hand2Formatted);
+  resultMessage.textContent = result;
+});
